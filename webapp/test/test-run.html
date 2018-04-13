@@ -21,6 +21,7 @@
 
       setup(() => {
         trf = fixture('test-run-fixture');
+        trf.set('testRun', { browser_name: 'f' });
       });
 
       suite('static get properties()', () => {
@@ -44,6 +45,63 @@
           });
           test('isDiff(anything else)', () => {
             assert.isFalse(trf.isDiff('literally anything'));
+          });
+        });
+        suite('shortVersion', () => {
+          test('valid, major only', () => {
+            trf.set('testRun.browser_name', 'chrome');
+
+            trf.set('testRun.browser_version', '1');
+            assert.equal(trf.shortVersion(), '1');
+
+            trf.set('testRun.browser_version', '2.3');
+            assert.equal(trf.shortVersion(), '2');
+
+            trf.set('testRun.browser_version', '3.4.5');
+            assert.equal(trf.shortVersion(), '3');
+
+            trf.set('testRun.browser_version', '4.5.6.7');
+            assert.equal(trf.shortVersion(), '4');
+
+            trf.set('testRun.browser_version', '765.687');
+            assert.equal(trf.shortVersion(), '765');
+
+            trf.set('testRun.browser_version', '   11.0 ');
+            assert.equal(trf.shortVersion(), '11');
+
+            trf.set('testRun.browser_version', '56.0a');
+            assert.equal(trf.shortVersion(), '56');
+          });
+          test('valid, major and minor', () => {
+            trf.set('testRun.browser_name', 'safari');
+
+            trf.set('testRun.browser_version', '1');
+            assert.equal(trf.shortVersion(), '1');
+
+            trf.set('testRun.browser_version', '2.3');
+            assert.equal(trf.shortVersion(), '2.3');
+
+            trf.set('testRun.browser_version', '3.4.5');
+            assert.equal(trf.shortVersion(), '3.4');
+
+            trf.set('testRun.browser_version', '4.5.6.7');
+            assert.equal(trf.shortVersion(), '4.5');
+
+            trf.set('testRun.browser_version', '765.687');
+            assert.equal(trf.shortVersion(), '765.687');
+
+            trf.set('testRun.browser_version', '   11.0 ');
+            assert.equal(trf.shortVersion(), '11.0');
+
+            trf.set('testRun.browser_version', '56.0a');
+            assert.equal(trf.shortVersion(), '56.0');
+          });
+          test('invalid', () => {
+            trf.set('testRun.browser_version', 'five');
+            assert.equal(trf.shortVersion(), 'five');
+
+            trf.set('testRun.browser_version', '');
+            assert.equal(trf.shortVersion(), '');
           });
         });
       });
