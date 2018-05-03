@@ -49,59 +49,44 @@
         });
         suite('shortVersion', () => {
           test('valid, major only', () => {
-            trf.set('testRun.browser_name', 'chrome');
 
-            trf.set('testRun.browser_version', '1');
-            assert.equal(trf.shortVersion(), '1');
+            assert.equal(trf.shortVersion('chrome', '1'), '1');
 
-            trf.set('testRun.browser_version', '2.3');
-            assert.equal(trf.shortVersion(), '2');
+            assert.equal(trf.shortVersion('chrome', '2.3'), '2');
 
-            trf.set('testRun.browser_version', '3.4.5');
-            assert.equal(trf.shortVersion(), '3');
+            assert.equal(trf.shortVersion('chrome', '3.4.5'), '3');
 
-            trf.set('testRun.browser_version', '4.5.6.7');
-            assert.equal(trf.shortVersion(), '4');
+            assert.equal(trf.shortVersion('chrome', '4.5.6.7'), '4');
 
-            trf.set('testRun.browser_version', '765.687');
-            assert.equal(trf.shortVersion(), '765');
+            assert.equal(trf.shortVersion('chrome', '765.687'), '765');
 
-            trf.set('testRun.browser_version', '   11.0 ');
-            assert.equal(trf.shortVersion(), '11');
+            assert.equal(trf.shortVersion('chrome', '   11.0 '), '11');
 
-            trf.set('testRun.browser_version', '56.0a');
-            assert.equal(trf.shortVersion(), '56');
+            assert.equal(trf.shortVersion('chrome', '56.0a'), '56');
           });
           test('valid, major and minor', () => {
-            trf.set('testRun.browser_name', 'safari');
+            assert.equal(trf.shortVersion('safari', '1'), '1');
 
-            trf.set('testRun.browser_version', '1');
-            assert.equal(trf.shortVersion(), '1');
+            assert.equal(trf.shortVersion('safari', '2.3'), '2.3');
 
-            trf.set('testRun.browser_version', '2.3');
-            assert.equal(trf.shortVersion(), '2.3');
+            assert.equal(trf.shortVersion('safari', '3.4.5'), '3.4');
 
-            trf.set('testRun.browser_version', '3.4.5');
-            assert.equal(trf.shortVersion(), '3.4');
+            assert.equal(trf.shortVersion('safari', '4.5.6.7'), '4.5');
 
-            trf.set('testRun.browser_version', '4.5.6.7');
-            assert.equal(trf.shortVersion(), '4.5');
+            assert.equal(trf.shortVersion('safari', '765.687'), '765.687');
 
-            trf.set('testRun.browser_version', '765.687');
-            assert.equal(trf.shortVersion(), '765.687');
+            assert.equal(trf.shortVersion('safari', '   11.0 '), '11.0');
 
-            trf.set('testRun.browser_version', '   11.0 ');
-            assert.equal(trf.shortVersion(), '11.0');
-
-            trf.set('testRun.browser_version', '56.0a');
-            assert.equal(trf.shortVersion(), '56.0');
+            assert.equal(trf.shortVersion('safari', '56.0a'), '56.0');
           });
           test('invalid', () => {
-            trf.set('testRun.browser_version', 'five');
-            assert.equal(trf.shortVersion(), 'five');
+            assert.equal(trf.shortVersion('chrome', 'five'), 'five');
 
-            trf.set('testRun.browser_version', '');
-            assert.equal(trf.shortVersion(), '');
+            assert.equal(trf.shortVersion('chrome', ''), '');
+
+            assert.equal(trf.shortVersion('safari', 'five'), 'five');
+
+            assert.equal(trf.shortVersion('safari', ''), '');
           });
         });
       });
